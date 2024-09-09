@@ -33,16 +33,11 @@ LOAD_1=$(echo $LOAD_AVG | awk '{print $1}')
 LOAD_5=$(echo $LOAD_AVG | awk '{print $2}')
 LOAD_15=$(echo $LOAD_AVG | awk '{print $3}')
 
-# Convert Load Average to percentage and format
-LOAD_1_PERCENT=$(awk "BEGIN {printf \"%.0f%%\", (${LOAD_1} * 100)}")
-LOAD_5_PERCENT=$(awk "BEGIN {printf \"%.0f%%\", (${LOAD_5} * 100)}")
-LOAD_15_PERCENT=$(awk "BEGIN {printf \"%.0f%%\", (${LOAD_15} * 100)}")
-
 # Display System Load Average
 echo -e "\nSystem Load Average:"
-echo -e "  - 1 minute:    $LOAD_1_PERCENT"
-echo -e "  - 5 minutes:   $LOAD_5_PERCENT"
-echo -e "  - 15 minutes:  $LOAD_15_PERCENT"
+echo -e "  - 1 minute:    $LOAD_1"
+echo -e "  - 5 minutes:   $LOAD_5"
+echo -e "  - 15 minutes:  $LOAD_15"
 
 # Add a blank line
 echo
