@@ -1,16 +1,20 @@
 #!/bin/bash
 
 # Check if sshd is running, and start it if not
-if ! pgrep -x "sshd" > /dev/null
+if ! ps aux | grep "[s]shd" > /dev/null
 then
     sshd
 fi
 
-# Check if the redirection rule already exists
-if su -c "/system/bin/iptables -t nat -L PREROUTING -n -v | grep -q 'tcp dpt:22 redir ports 8022'"; then
-    # Rule already exists, no action needed
-    :
-else
-    # Add the redirection rule
-    su -c "/system/bin/iptables -t nat -A PREROUTING -p tcp --dport 22 -j REDIRECT --to-port 8022"
+# Check if nginx is running on port 8080, and start it if not
+PORT=8080
+if ! lsof -i :$PORT > /dev/null 2>&1
+then
+    nginx
+fi
+
+# Check if Cloudflare tunnel is running
+if ! ps aux | grep "[c]loudflared tunnel run ssh" > /dev/null
+then
+    cloudflared tunnel run ssh > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
 fi
