@@ -39,5 +39,6 @@ echo -e "  - 1 minute:    $LOAD_1"
 echo -e "  - 5 minutes:   $LOAD_5"
 echo -e "  - 15 minutes:  $LOAD_15"
 
-# Add a blank line
-echo
+# Display services status (continuation in .bashrc file)
+echo -e "\nServices status:"
+~ $ 
