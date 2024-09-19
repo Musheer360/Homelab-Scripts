@@ -14,7 +14,7 @@ then
 fi
 
 # Check if Cloudflare tunnel is running
-if ! ps aux | grep "[c]loudflared tunnel run ssh" > /dev/null
+if ! ps aux | grep "[c]loudflared tunnel run expose" > /dev/null
 then
-    cloudflared tunnel run ssh > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
+    cloudflared tunnel run expose > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
 fi
