@@ -65,11 +65,11 @@ else
 fi
 
 # Check if Cloudflare is already running
-if is_process_running "cloudflared tunnel run ssh"; then
+if is_process_running "cloudflared tunnel run expose"; then
   echo "  - Cloudflare tunnel is running."
 else
   echo "  - Cloudflare tunnel is not running. Starting Cloudflare tunnel..."
-  cloudflared tunnel run ssh > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
+  cloudflared tunnel run expose > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
   CLOUDFLARED_PID=$!
   sleep 5  # Allow time for Cloudflare to start
 
