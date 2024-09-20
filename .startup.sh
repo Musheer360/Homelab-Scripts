@@ -11,7 +11,7 @@ echo
 
 # Display system uptime without the word "up"
 UPTIME=$(uptime -p | sed 's/up //')
-echo "The system is up for $UPTIME."
+echo "System Uptime: $UPTIME"
 echo
 
 # Get CPU Temperature
@@ -22,7 +22,7 @@ echo
 # Get Memory usage
 MEMORY_USAGE=$(free -m | awk 'NR==2{print $3}')
 MEMORY_TOTAL=$(free -m | awk 'NR==2{print $2}')
-MEMORY_PERCENTAGE=$(awk "BEGIN {printf \"%.2f\", (${MEMORY_USAGE} * 100.0 / ${MEMORY_TOTAL})}")
+MEMORY_PERCENTAGE=$(awk "BEGIN {printf \"%.0f\", (${MEMORY_USAGE} * 100.0 / ${MEMORY_TOTAL})}")
 
 # Format and display Memory usage
 echo -e "Memory Usage: ${MEMORY_USAGE} MB / ${MEMORY_TOTAL} MB (${MEMORY_PERCENTAGE}%)"
@@ -60,13 +60,21 @@ echo
 BATTERY_STATUS=$(termux-battery-status)
 BATTERY_PERCENTAGE=$(echo "$BATTERY_STATUS" | grep -oP '"percentage":\s*\K\d+')
 BATTERY_STATE=$(echo "$BATTERY_STATUS" | grep -oP '"status":\s*"\K[^"]+' | sed 's/\(.*\)/\L\1/' | sed 's/^./\U&/')
-BATTERY_TEMP=$(echo "$BATTERY_STATUS" | grep -oP '"temperature":\s*\K[\d.]+' | awk '{printf "%.1f", $1}')
+BATTERY_TEMP=$(echo "$BATTERY_STATUS" | grep -oP '"temperature":\s*\K[\d.]+' | awk '{printf "%.0f", $1}')
+BATTERY_PLUGGED=$(echo "$BATTERY_STATUS" | grep -oP '"plugged":\s*"\K[^"]+')
+
+# Determine the plug status
+if [[ "$BATTERY_PLUGGED" == "PLUGGED_AC" || "$BATTERY_PLUGGED" == "PLUGGED_USB" ]]; then
+    PLUG_STATUS="Plugged-in"
+else
+    PLUG_STATUS="Unplugged"
+fi
 
 # Display Battery Status
 echo -e "Battery Status:\n"
 echo -e "  - Percentage:  $BATTERY_PERCENTAGE%"
 echo -e "  - Temperature: ${BATTERY_TEMP}°C"
-echo -e "  - Status:      $BATTERY_STATE"
+echo -e "  - Status:      $PLUG_STATUS ($BATTERY_STATE)"
 
 # Display services status (continuation in .bashrc file)
 echo -e "\nServices status:"
