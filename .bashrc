@@ -27,23 +27,25 @@ is_process_running() {
 # Start nginx if port 8080 is not in use
 PORT=8080
 if is_port_in_use $PORT; then
-  echo "  - Nginx is running on port $PORT."
+  echo "  - Nginx is running."
 else
-  echo "  - Nginx is not running. Starting nginx..."
+  echo "  - Nginx is not running."
+  echo "    Starting nginx..."
   nginx
   if is_port_in_use $PORT; then
-    echo "  - Nginx started successfully on port $PORT."
+    echo "  - Nginx started."
   else
-    echo "  - Failed to start Nginx on port $PORT."
+    echo "  - Failed to start Nginx."
   fi
 fi
 
 # Start sshd if not already running
 if ! is_process_running "sshd"; then
-  echo "  - SSHD is not running. Starting SSHD..."
+  echo "  - SSHD is not running."
+  echo "    Starting SSHD..."
   sshd
   if [ $? -eq 0 ]; then
-    echo "  - SSHD started successfully."
+    echo "  - SSHD started."
   else
     echo "  - Failed to start SSHD."
   fi
@@ -53,10 +55,11 @@ fi
 
 # Start crond if not already running
 if ! is_process_running "crond"; then
-  echo "  - Crond is not running. Starting Crond..."
+  echo "  - Crond is not running."
+  echo "    Starting Crond..."
   crond
   if [ $? -eq 0 ]; then
-    echo "  - Crond started successfully."
+    echo "  - Crond started."
   else
     echo "  - Failed to start Crond."
   fi
@@ -68,13 +71,14 @@ fi
 if is_process_running "cloudflared tunnel run expose"; then
   echo "  - Cloudflare tunnel is running."
 else
-  echo "  - Cloudflare tunnel is not running. Starting Cloudflare tunnel..."
+  echo "  - Cloudflare tunnel is not running."
+  echo "    Starting Cloudflare tunnel..."
   cloudflared tunnel run expose > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
   CLOUDFLARED_PID=$!
   sleep 5  # Allow time for Cloudflare to start
 
   if ps -p $CLOUDFLARED_PID > /dev/null; then
-    echo "  - Cloudflare tunnel is running successfully."
+    echo "  - Cloudflare tunnel is running."
   else
     echo "  - Failed to start Cloudflare tunnel."
   fi
