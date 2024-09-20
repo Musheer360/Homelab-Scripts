@@ -67,20 +67,20 @@ else
   echo "  - Crond is running."
 fi
 
-# Check if Cloudflare is already running
+# Check if Cloudflared is already running
 if is_process_running "cloudflared tunnel run expose"; then
-  echo "  - Cloudflare tunnel is running."
+  echo "  - Cloudflared is running."
 else
-  echo "  - Cloudflare tunnel is not running."
-  echo "    Starting Cloudflare tunnel..."
+  echo "  - Cloudflared is not running."
+  echo "    Starting Cloudflared..."
   cloudflared tunnel run expose > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
   CLOUDFLARED_PID=$!
-  sleep 5  # Allow time for Cloudflare to start
+  sleep 5  # Allow time for Cloudflared to start
 
   if ps -p $CLOUDFLARED_PID > /dev/null; then
-    echo "  - Cloudflare tunnel is running."
+    echo "  - Cloudflared is running."
   else
-    echo "  - Failed to start Cloudflare tunnel."
+    echo "  - Failed to start Cloudflared."
   fi
 fi
 
