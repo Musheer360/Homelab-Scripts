@@ -32,10 +32,11 @@ else
   echo "  - Nginx is not running."
   echo "    Starting nginx..."
   nginx
+  sleep 1  # Allow time for Nginx to start
   if is_port_in_use $PORT; then
-    echo "  - Nginx started."
+    echo "    Nginx started."
   else
-    echo "  - Failed to start Nginx."
+    echo "    Failed to start Nginx."
   fi
 fi
 
@@ -44,10 +45,11 @@ if ! is_process_running "sshd"; then
   echo "  - SSHD is not running."
   echo "    Starting SSHD..."
   sshd
-  if [ $? -eq 0 ]; then
-    echo "  - SSHD started."
+  sleep 1  # Allow time for SSHD to start
+  if is_process_running "sshd"; then
+    echo "    SSHD started."
   else
-    echo "  - Failed to start SSHD."
+    echo "    Failed to start SSHD."
   fi
 else
   echo "  - SSHD is running."
@@ -58,10 +60,11 @@ if ! is_process_running "crond"; then
   echo "  - Crond is not running."
   echo "    Starting Crond..."
   crond
-  if [ $? -eq 0 ]; then
-    echo "  - Crond started."
+  sleep 1  # Allow time for Crond to start
+  if is_process_running "crond"; then
+    echo "    Crond started."
   else
-    echo "  - Failed to start Crond."
+    echo "    Failed to start Crond."
   fi
 else
   echo "  - Crond is running."
@@ -78,9 +81,9 @@ else
   sleep 5  # Allow time for Cloudflared to start
 
   if ps -p $CLOUDFLARED_PID > /dev/null; then
-    echo "  - Cloudflared is running."
+    echo "    Cloudflared started."
   else
-    echo "  - Failed to start Cloudflared."
+    echo "    Failed to start Cloudflared."
   fi
 fi
 
