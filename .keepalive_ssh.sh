@@ -20,21 +20,19 @@ is_process_running() {
   fi
 }
 
-# Define ports
+# Check if sshd is not running and port 8282 is not in use, start it if both conditions are true
 SSHD_PORT=8282
-NGINX_PORT=8080
-
-# Check if sshd is running, and start it if not
 if ! is_process_running "sshd" && ! is_port_in_use $SSHD_PORT; then
     sshd
 fi
 
-# Check if nginx is running on port 8080, and start it if not
+# Check if nginx is not running and port 8080 is not in use, start it if both conditions are true
+NGINX_PORT=8080
 if ! is_process_running "nginx: master process nginx" && ! is_port_in_use $NGINX_PORT; then
     nginx
 fi
 
-# Check if Cloudflare tunnel is running
+# Check if Cloudflare tunnel is not running, start it if true
 if ! is_process_running "cloudflared tunnel run expose"; then
     cloudflared tunnel run expose > /data/data/com.termux/files/home/cloudflared.log 2>&1 &
 fi
